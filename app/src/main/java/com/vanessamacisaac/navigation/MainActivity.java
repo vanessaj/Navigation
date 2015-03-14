@@ -1,5 +1,6 @@
 package com.vanessamacisaac.navigation;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -40,15 +41,20 @@ public class MainActivity extends ActionBarActivity {
 
     public void clickTL(View view){
         // top left button clicked
+        Intent i = new Intent(this, Directions.class);
+        startActivity(i);
 
     }
 
     public void clickTR(View view){
         // top right button clicked
+        Intent i = new Intent(this, DeviceListActivity.class);
+        startActivity(i);
     }
 
     public void clickBL(View view){
         // bottom left button clicked
+
     }
 
     public void clickBR(View view){
