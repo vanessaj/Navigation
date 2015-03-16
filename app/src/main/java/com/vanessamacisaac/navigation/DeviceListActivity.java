@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 /**
  * Derived from the Bluetooth Chat example, an activity that enables
@@ -29,6 +30,17 @@ public class DeviceListActivity extends Activity {
     // Debugging
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
+
+    // Name of the connected device
+    private String mConnectedDeviceName = null;
+    // Array adapter for the conversation thread
+    private ArrayAdapter<String> mConversationArrayAdapter;
+    // String buffer for outgoing messages
+    private StringBuffer mOutStringBuffer;
+    // Local Bluetooth adapter
+    private BluetoothAdapter mBluetoothAdapter = null;
+    // Member object for the chat services
+    private BtSPPHelper btSPPHelper = null;
 
     // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
@@ -147,9 +159,18 @@ public class DeviceListActivity extends Activity {
             Intent intent = new Intent();
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
+            Context context = getApplicationContext();
+            CharSequence text = "Address = " + address;
+            int duration = Toast.LENGTH_LONG;
+
+            Toast.makeText(context, text, duration).show();
+
+            //BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+            // Attempt to connect to the device
+            //btSPPHelper.connect(device);
             // Set result and finish this Activity
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            //setResult(Activity.RESULT_OK, intent);
+            //finish();
         }
     };
 
@@ -179,5 +200,7 @@ public class DeviceListActivity extends Activity {
             }
         }
     };
+
+
 
 }
