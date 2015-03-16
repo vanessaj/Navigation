@@ -48,4 +48,6 @@
 
     <color name="green">#11DD11</color>
 
+    <string name="title_activity_send_directions">SendDirections</string>
+
 </resources>

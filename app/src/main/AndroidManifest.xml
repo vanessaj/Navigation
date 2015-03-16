@@ -32,6 +32,10 @@
             android:name=".BtConsoleActivity"
             android:label="@string/title_activity_bt_console" >
         </activity>
+        <activity
+            android:name=".SendDirections"
+            android:label="@string/title_activity_send_directions" >
+        </activity>
     </application>
 
 </manifest>
