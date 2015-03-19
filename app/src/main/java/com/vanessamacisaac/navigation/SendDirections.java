@@ -53,6 +53,8 @@ public class SendDirections extends ActionBarActivity {
             finish();
             return;
         }
+
+        //btSPPHelper = new BtSPPHelper(this, );
     }
 
 
@@ -156,19 +158,19 @@ public class SendDirections extends ActionBarActivity {
     }
 
     private void sendMessage(String message) {
-        if (btSPPHelper.getState() != BtSPPHelper.State.CONNECTED) {
-            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT)
-                    .show();
+        if(D) Log.e(TAG, "++ Send Message ++");
+        /*if (btSPPHelper.getState() != BtSPPHelper.State.CONNECTED) {
+            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if(D) Log.e(TAG, "++ about to write ++");
         if (message.length() > 0) {
             byte[] send = message.getBytes();
             btSPPHelper.write(send);
 
             mOutStringBuffer.setLength(0);
             //mOutEditText.setText(mOutStringBuffer);
-        }
+        }*/
     }
 
     @Override

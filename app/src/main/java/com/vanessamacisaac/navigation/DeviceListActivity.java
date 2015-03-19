@@ -12,7 +12,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -157,13 +156,15 @@ public class DeviceListActivity extends Activity {
 
             // Create the result Intent and include the MAC address
             Intent intent = new Intent();
+            //Intent intent = new Intent(DeviceListActivity.class, SendDirections.class);
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
             Context context = getApplicationContext();
             CharSequence text = "Address = " + address;
             int duration = Toast.LENGTH_LONG;
 
-            Toast.makeText(context, text, duration).show();
+            //Toast.makeText(context, text, duration).show();
+
 
             //BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
             // Attempt to connect to the device

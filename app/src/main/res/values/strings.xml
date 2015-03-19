@@ -46,8 +46,10 @@
     <string name="bt_unable">Unable to connect</string>
     <string name="title_activity_device_list">DeviceListActivity</string>
 
-    <color name="green">#11DD11</color>
+    <color name="green">#1abc9c</color>
 
     <string name="title_activity_send_directions">SendDirections</string>
+
+
 
 </resources>
