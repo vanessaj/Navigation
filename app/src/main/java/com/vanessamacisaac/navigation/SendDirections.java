@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.UnsupportedEncodingException;
 
 
 public class SendDirections extends ActionBarActivity {
@@ -131,7 +134,7 @@ public class SendDirections extends ActionBarActivity {
         });
 
         // Initialize the BluetoothChatService to perform bluetooth connections
-        //btSPPHelper = new BtSPPHelper(this, mHandler);
+        btSPPHelper = new BtSPPHelper(this, mHandler);
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
@@ -159,6 +162,10 @@ public class SendDirections extends ActionBarActivity {
 
     private void sendMessage(String message) {
         if(D) Log.e(TAG, "++ Send Message ++");
+
+        if(btSPPHelper == null){
+            Log.e(TAG, "*** btSPPHelper is null");
+        }
         /*if (btSPPHelper.getState() != BtSPPHelper.State.CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
             return;
@@ -172,6 +179,75 @@ public class SendDirections extends ActionBarActivity {
             //mOutEditText.setText(mOutStringBuffer);
         }*/
     }
+
+    // The Handler that gets information back from the BluetoothChatService
+    private final BtHelperHandler mHandler = new BtHelperHandler() {
+        @Override
+        public void handleMessage(Message msg) {
+            BtHelperHandler.MessageType messageType =
+                    BtHelperHandler.MessageType.values()[msg.what];
+            switch (messageType) {
+                case STATE:
+                    stateChanged((BtSPPHelper.State) msg.obj);
+                    break;
+                case WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+                    String writeMessage = new String(writeBuf);
+                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+                    break;
+                case READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage;
+                    try {
+                        readMessage = new String(readBuf, 0, msg.arg1, "UTF-16");
+                    } catch (UnsupportedEncodingException e) {
+                        // Should complain
+                        readMessage = "";
+                    }
+                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  "
+                            + readMessage);
+                    break;
+                case DEVICE:
+                    // save the connected device's name
+                    mConnectedDeviceName = (String) msg.obj;
+                    Toast.makeText(getApplicationContext(),
+                            "Connected to " + mConnectedDeviceName,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                case NOTIFY:
+                    Toast.makeText(getApplicationContext(), (String) msg.obj,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
+        /*
+         * If the Handler got a state-changes message, process
+         * the new state here. We indicate current state in the
+         * title bar
+         */
+        private void stateChanged(BtSPPHelper.State state) {
+            switch (state) {
+                case CONNECTED:
+                    //mTitle.setText(R.string.title_connected_to);
+                    //mTitle.append(mConnectedDeviceName);
+                    Log.i(TAG, "** DEVICE CONNECTED **");
+                    mConversationArrayAdapter.clear();
+                    break;
+                case CONNECTING:
+                    //mTitle.setText(R.string.title_connecting);
+                    Log.i(TAG, "** DEVICE CONNECTING **");
+                    break;
+                case LISTEN:
+                case NONE:
+                    //mTitle.setText(R.string.title_not_connected);
+                    Log.i(TAG, "** DEVICE NOT CONNECTED **");
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
