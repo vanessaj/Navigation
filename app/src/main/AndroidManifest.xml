@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vanessamacisaac.navigation" >
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -29,12 +34,12 @@
             android:label="@string/title_activity_device_list" >
         </activity>
         <activity
-            android:name=".BtConsoleActivity"
-            android:label="@string/title_activity_bt_console" >
-        </activity>
-        <activity
             android:name=".SendDirections"
             android:label="@string/title_activity_send_directions" >
+        </activity>
+        <activity
+            android:name=".TryBluetooth"
+            android:label="@string/title_activity_try_bluetooth" >
         </activity>
     </application>
 

@@ -39,7 +39,7 @@ public class DeviceListActivity extends Activity {
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
     // Member object for the chat services
-    private BtSPPHelper btSPPHelper = null;
+   // private BtSPPHelper btSPPHelper = null;
 
     // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "device_address";

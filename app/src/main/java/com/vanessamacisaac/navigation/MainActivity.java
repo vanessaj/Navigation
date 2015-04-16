@@ -61,5 +61,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void clickBR(View view){
         // bottom right button clicked
+        Intent i = new Intent(this, TryBluetooth.class);
+        startActivity(i);
     }
 }

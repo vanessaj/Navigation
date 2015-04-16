@@ -1,9 +1,11 @@
 package com.vanessamacisaac.navigation;
 
+import android.bluetooth.BluetoothDevice;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +48,12 @@ public class Directions extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void rightClick(View view){
+        Log.e("Directions", "RIGHT CLICK");
+
+        //BluetoothDevice device =
     }
 
     /**

@@ -5,20 +5,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.vanessamacisaac.navigation.Directions$PlaceholderFragment">
+    tools:context="com.vanessamacisaac.navigation.TryBluetooth">
 
-    <Button
-        android:id="@+id/left"
-        android:text="left"
-        android:layout_width="match_parent"
+    <TextView android:text="Try out bluetooth!" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/right"
-        android:text="right"
-        android:padding="20dp"
+        android:id="@+id/leftBT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="rightClick"/>
+        android:text="Left"
+        android:onClick="leftBT"/>
+
+    <Button
+        android:id="@+id/rightBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Right"
+        android:onClick="rightBT"/>
 
 </LinearLayout>
