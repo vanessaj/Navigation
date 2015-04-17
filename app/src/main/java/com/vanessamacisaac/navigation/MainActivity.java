@@ -73,7 +73,6 @@ public class MainActivity extends ActionBarActivity {
         // bottom left button clicked
         Intent i = new Intent(this, SendDirections.class);
         startActivity(i);
-
     }
 
     public void clickBR(View view){

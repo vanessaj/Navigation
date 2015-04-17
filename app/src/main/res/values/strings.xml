@@ -72,6 +72,7 @@
     <string name="title_activity_edit_place">EditPlace</string>
     <string name="edit_button">Update Place</string>
     <string name="title_activity_add_my_place">AddMyPlace</string>
+    <string name="location_updated_message">Location Updated!!</string>
 
 
 
