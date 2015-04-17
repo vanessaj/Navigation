@@ -46,6 +46,10 @@ public class AddMyPlace extends ActionBarActivity {
                 startActivity(newHome);
                 break;
 
+            case R.id.menu_device_list:
+                Intent deviceList = new Intent(this, DeviceListActivity.class);
+                startActivity(deviceList);
+                break;
             default:
                 break;
         }

@@ -61,7 +61,10 @@ public class MyPlaces extends ActionBarActivity {
                 Intent newHome = new Intent (this, MainActivity.class);
                 startActivity(newHome);
                 break;
-
+            case R.id.menu_device_list:
+                Intent deviceList = new Intent(this, DeviceListActivity.class);
+                startActivity(deviceList);
+                break;
             default:
                 break;
         }
