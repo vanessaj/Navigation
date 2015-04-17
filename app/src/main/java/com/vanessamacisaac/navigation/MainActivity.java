@@ -20,7 +20,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.nav_menu, menu);
         return true;
     }
 
@@ -31,6 +31,20 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch (id) {
+            case R.id.menu_add_place:
+                Intent newPlace = new Intent (this, AddMyPlace.class);
+                startActivity(newPlace);
+                break;
+
+            case R.id.menu_home:
+                Intent newHome = new Intent (this, MainActivity.class);
+                startActivity(newHome);
+                break;
+
+            default:
+                break;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

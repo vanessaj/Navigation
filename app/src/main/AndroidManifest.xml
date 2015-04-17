@@ -45,6 +45,14 @@
             android:name=".MyPlaces"
             android:label="@string/title_activity_my_places" >
         </activity>
+        <activity
+            android:name=".EditPlace"
+            android:label="@string/title_activity_edit_place" >
+        </activity>
+        <activity
+            android:name=".AddMyPlace"
+            android:label="@string/title_activity_add_my_place" >
+        </activity>
     </application>
 
 </manifest>

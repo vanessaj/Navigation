@@ -69,6 +69,9 @@
     <string name="sample_lat">ex: -45.354684</string>
     <string name="sample_lon">ex: 75.864915</string>
     <string name="add_button">Add Place</string>
+    <string name="title_activity_edit_place">EditPlace</string>
+    <string name="edit_button">Update Place</string>
+    <string name="title_activity_add_my_place">AddMyPlace</string>
 
 
 

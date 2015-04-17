@@ -51,6 +51,20 @@ public class MyPlaces extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_add_place:
+                Intent newPlace = new Intent (this, AddMyPlace.class);
+                startActivity(newPlace);
+                break;
+
+            case R.id.menu_home:
+                Intent newHome = new Intent (this, MainActivity.class);
+                startActivity(newHome);
+                break;
+
+            default:
+                break;
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -214,8 +228,8 @@ public class MyPlaces extends ActionBarActivity {
         //Display activity with data from database to edit
         Log.v("Edit Place", "editing place " + infoItemNum);
         // FIX BACK
-        Intent intent = new Intent(this,MainActivity.class);
-        //Intent intent = new Intent(this, EditPlace.class);
+        //Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, EditPlace.class);
         intent.putExtra("ITEM_NUM", infoItemNum);
         startActivity(intent);
 

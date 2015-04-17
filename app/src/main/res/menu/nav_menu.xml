@@ -4,12 +4,10 @@
     <item
         android:id="@+id/menu_add_place"
         android:icon="@drawable/ic_launcher"
-        android:showAsAction="collapseActionView|ifRoom"
-        android:title="@string/nav_menu_string"/>
+        android:title="Add Place"/>
 
     <item
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_launcher"
-        android:showAsAction="collapseActionView|ifRoom"
-        android:title="@string/nav_menu_string"/>
+        android:title="Home"/>
 </menu>
