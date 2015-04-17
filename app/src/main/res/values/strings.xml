@@ -50,6 +50,25 @@
 
     <string name="title_activity_send_directions">SendDirections</string>
     <string name="title_activity_try_bluetooth">TryBluetooth</string>
+    <string name="title_activity_my_places">MyPlaces</string>
+    <string name="placesTitle">My Places</string>
+
+    <string-array name="menu">
+        <item>Edit</item>
+        <item>Delete</item>
+        <item>Cancel</item>
+    </string-array>
+
+    <string name="nav_menu_string">Navigation Menu</string>
+    <string name="give_name">Enter the location name:</string>
+    <string name="give_address">Enter location address:</string>
+    <string name="give_lon">Enter location\'s longitude:</string>
+    <string name="give_lat">Enter location\'s latitude:</string>
+    <string name="sample_name">ex: Home</string>
+    <string name="sample_address">ex: 123 Main St.</string>
+    <string name="sample_lat">ex: -45.354684</string>
+    <string name="sample_lon">ex: 75.864915</string>
+    <string name="add_button">Add Place</string>
 
 
 

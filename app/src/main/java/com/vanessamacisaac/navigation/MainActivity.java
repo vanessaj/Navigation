@@ -64,4 +64,10 @@ public class MainActivity extends ActionBarActivity {
         Intent i = new Intent(this, TryBluetooth.class);
         startActivity(i);
     }
+
+    public void myPlacesClick(View view){
+        Intent i = new Intent(this, MyPlaces.class);
+        startActivity(i);
+    }
+
 }
