@@ -21,6 +21,13 @@
         android:layout_height="wrap_content"
         android:onClick="stopUpdatesButtonHandler"/>
 
+    <Button
+        android:text="Next Step"
+        android:id="@+id/next_step_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="nextStepButtonHandler"/>
+
     <TextView
         android:id="@+id/latitude_text"
         android:layout_width="wrap_content"
@@ -41,6 +48,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/destinationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Destination:"/>
+
+    <TextView
+        android:id="@+id/destinationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/directionsRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.vanessamacisaac.navigation;
 
+import android.database.Cursor;
+import android.database.SQLException;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -29,6 +31,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -45,7 +48,7 @@ public class Directions extends ActionBarActivity implements
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -80,6 +83,7 @@ public class Directions extends ActionBarActivity implements
     protected TextView mLastUpdateTimeTextView;
     protected TextView mLatitudeTextView;
     protected TextView mLongitudeTextView;
+    protected TextView mDirectionsInfo;
 
     /**
      * Tracks the status of the location updates request. Value changes when the user presses the
@@ -92,10 +96,30 @@ public class Directions extends ActionBarActivity implements
      */
     protected String mLastUpdateTime;
 
+    // DB ID for destination
+    protected int destinationID;
+
+    // JSONarray for steps
+    protected JSONArray mSteps;
+    protected int stepNum;
+
+    protected Boolean checkedDirections = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
+
+        // get bundle extras
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            destinationID = extras.getInt("PLACE_ID");
+            Log.e(TAG, "Place ID = " + destinationID);
+        }
+        else{
+            Toast.makeText(this, "ERROR: No destination specified from main menu!",
+                    Toast.LENGTH_SHORT).show();
+        }
 
         // Locate the UI widgets.
         mStartUpdatesButton = (Button) findViewById(R.id.start_updates_button);
@@ -103,6 +127,7 @@ public class Directions extends ActionBarActivity implements
         mLatitudeTextView = (TextView) findViewById(R.id.latitude_text);
         mLongitudeTextView = (TextView) findViewById(R.id.longitude_text);
         mLastUpdateTimeTextView = (TextView) findViewById(R.id.last_update_time_text);
+        mDirectionsInfo = (TextView) findViewById(R.id.directionsRequest);
 
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
@@ -144,7 +169,15 @@ public class Directions extends ActionBarActivity implements
                 mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
             }
             updateUI();
+
+
+
+
         }
+    }
+
+    public void nextStepButtonHandler(View view){
+        stepNum = stepNum++;
     }
 
     /**
@@ -247,8 +280,46 @@ public class Directions extends ActionBarActivity implements
             mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
             mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
             mLastUpdateTimeTextView.setText(mLastUpdateTime);
-            getAddress();
+            //getAddress();
+
+            //TODO
+            // check directions
+            if(!checkedDirections){
+                getDirections();
+            }
+            //TODO
+            // check current journey progress
+            if(mSteps!=null){
+                JSONObject currentStep = null;
+                try {
+                    if(stepNum <= mSteps.length()){
+                        Log.e(TAG, "getting info for step # " + stepNum);
+                        currentStep = mSteps.getJSONObject(stepNum);
+                        // calculate start and end point difference
+                        String instructions = currentStep.get("html_instructions").toString();
+                        String start = currentStep.get("start_location").toString();
+                        instructions = instructions.replaceAll("<b>","");
+                        instructions = instructions.replaceAll("</b>","");
+                        mDirectionsInfo.setText(instructions + "\n" + start);
+                    }
+                    else if(stepNum == mSteps.length()+1){
+                        Toast.makeText(this, "REACHED DESTINATION!",
+                                Toast.LENGTH_SHORT).show();
+                        stopLocationUpdates();
+
+                    }
+                    else{
+                        Toast.makeText(this, "ERROR: current step number is out of bounds",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
+        stepNum = stepNum + 1;
     }
 
     /**
@@ -394,11 +465,11 @@ public class Directions extends ActionBarActivity implements
         double mLon = mCurrentLocation.getLongitude();
         //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+mLat+","+mLon+"&destination=43.009762,-81.274271&mode=walking&key=AIzaSyDe83w8OsRRYlZ5JwmGzDFGfWSQIdD00GQ";
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+mLat+","+mLon+"&key=AIzaSyB--SRzc9zZHAq7Y0Ln7iNC5JK3Tp1S4I0";
-        new RequestTask().execute(url);
+        new RequestCurrentAddress().execute(url);
     }
 
-    // Request directions using http request
-    class RequestTask extends AsyncTask<String, String, String> {
+    // Request current address using http request
+    class RequestCurrentAddress extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... uri) {
@@ -447,6 +518,102 @@ public class Directions extends ActionBarActivity implements
                 mTV.setText(addr);
             } catch (Exception e) {
                 Log.v(TAG, "JSON failed");
+            }
+
+        }
+
+
+    }
+
+    public void getDirections(){
+        checkedDirections = true;
+        double mLat = mCurrentLocation.getLatitude();
+        double mLon = mCurrentLocation.getLongitude();
+        // lookup destination coordinates
+        DatabaseHandler myDBH = new DatabaseHandler(this);
+        try {
+            myDBH.createDatabase();
+        } catch (IOException ioe) {
+            Log.e(TAG, "unable to create database");
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDBH.openDatabase();
+        }catch(SQLException sqle){
+            throw sqle;}
+
+        Cursor placeInfo = myDBH.fetchInfoFromID(destinationID);
+        myDBH.close();
+
+        if(placeInfo!=null){
+            placeInfo.moveToFirst();
+            Double destLat = placeInfo.getDouble(placeInfo.getColumnIndex("latitude"));
+            Double destLon = placeInfo.getDouble(placeInfo.getColumnIndex("longitude"));
+            Log.e(TAG, "** Destination lat = " + destLat);
+            Log.e(TAG, "** Destination lon = " + destLon);
+            TextView destTV = (TextView) findViewById(R.id.destinationName);
+            destTV.setText(placeInfo.getString(placeInfo.getColumnIndex("name")));
+            String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+mLat+","+mLon+"&destination="+destLat+","+destLon+"&mode=walking&key=AIzaSyB--SRzc9zZHAq7Y0Ln7iNC5JK3Tp1S4I0";
+            Log.e(TAG, url);
+            new RequestDirections().execute(url);
+        }
+        else{
+            Log.e(TAG, "Error getting info on destination");
+        }
+
+    }
+
+    // Request directions using http request
+    class RequestDirections extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... uri) {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseString = null;
+            try {
+                response = httpclient.execute(new HttpGet(uri[0]));
+                StatusLine statusLine = response.getStatusLine();
+                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    responseString = out.toString();
+                    out.close();
+                } else{
+                    //Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+            } catch (ClientProtocolException e) {
+                //TODO Handle problems..
+            } catch (IOException e) {
+                //TODO Handle problems..
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            //Do anything with response..
+            mDirectionsInfo.setText(result);
+            mDirectionsInfo.setMovementMethod(new ScrollingMovementMethod());
+            // Log.v(TAG, result);
+            try{
+                // get JSON object returned from request
+                JSONObject json = new JSONObject(result);
+                JSONArray routesArray = json.getJSONArray("routes");
+                JSONObject rObj = routesArray.getJSONObject(0);
+                JSONArray legsArray = rObj.getJSONArray("legs");
+                JSONObject lObj = legsArray.getJSONObject(0);
+                JSONArray steps = lObj.getJSONArray("steps");
+                mSteps = steps;
+                stepNum = 0;
+                JSONObject currentStep = mSteps.getJSONObject(stepNum);
+                mDirectionsInfo.setText(currentStep.toString());
+
+            } catch (Exception e) {
+                Log.v(TAG, "JSON Failed");
             }
 
         }

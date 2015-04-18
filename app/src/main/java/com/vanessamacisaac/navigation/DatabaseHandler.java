@@ -164,7 +164,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
         mcursor = myData.rawQuery("SELECT * FROM places WHERE _id = 1", null);
 
         if(mcursor != null){
@@ -185,7 +185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
         placesC = myData.query(DB_TABLE_PLACES, new String[] {KEY_ROWID, KEY_PICID, KEY_NAME, KEY_ADDR, KEY_LON, KEY_LAT}, null, null, null, null, null, null);
 
         if(placesC != null){
@@ -206,7 +206,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         myData.compileStatement("CREATE TABLE IF NOT EXISTS favourites (_id INTEGER, refid INTEGER)");
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
 
         pictRef = myData.rawQuery("SELECT refid FROM favourites WHERE _id = ?", new String[]{pic});
 
@@ -227,7 +227,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
 
         //c = myData.rawQuery("SELECT latitude FROM places WHERE ", selectionArgs)
 
@@ -240,14 +240,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
         myData.execSQL("INSERT INTO places (pic_id, name, address, longitude, latitude) VALUES (?, ?, ?, ?, ?)", new Object[]{pic, name, address, lon, lat});
     }
 
     public void deletePlace(int placeID){
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
         myData.execSQL("DELETE FROM places WHERE _id = ?", new Object[]{placeID});
     }
 
@@ -255,7 +255,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor c = null;
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
 
         String place = Integer.toString(placeID);
 
@@ -267,7 +267,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void updatePlace(String name, String address, String lat, String lon, String placeID){
         String myPath = DB_PATH + DB_NAME;
         myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude TEXT, latitude TEXT)");
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
 
         myData.execSQL("UPDATE places SET name = ?, address = ?, latitude = ?, longitude = ? WHERE _id = ?", new String[]{name, address, lat, lon, placeID});
     }

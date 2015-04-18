@@ -58,28 +58,38 @@ public class MainActivity extends ActionBarActivity {
 
     public void clickTL(View view){
         // top left button clicked
-        Intent i = new Intent(this, Directions.class);
-        startActivity(i);
-
+        //Intent i = new Intent(this, Directions.class);
+        //startActivity(i);
+        startDirections(1);
     }
 
     public void clickTR(View view){
         // top right button clicked
-        Intent i = new Intent(this, DeviceListActivity.class);
-        startActivity(i);
+        //Intent i = new Intent(this, DeviceListActivity.class);
+        //startActivity(i);
+        startDirections(2);
     }
 
     public void clickBL(View view){
         // bottom left button clicked
-        Intent i = new Intent(this, SendDirections.class);
-        startActivity(i);
+        //Intent i = new Intent(this, SendDirections.class);
+        //startActivity(i);
+        startDirections(3);
     }
 
     public void clickBR(View view){
         // bottom right button clicked
-        Intent i = new Intent(this, TryBluetooth.class);
+        //Intent i = new Intent(this, TryBluetooth.class);
+        //startActivity(i);
+        startDirections(4);
+    }
+
+    public void startDirections(int placeID){
+        Intent i = new Intent(this, Directions.class);
+        i.putExtra("PLACE_ID", placeID);
         startActivity(i);
     }
+
 
     public void myPlacesClick(View view){
         Intent i = new Intent(this, MyPlaces.class);
