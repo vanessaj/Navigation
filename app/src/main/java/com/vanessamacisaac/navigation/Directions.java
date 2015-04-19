@@ -43,7 +43,7 @@ import java.util.Date;
 public class Directions extends ActionBarActivity implements
         ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
-    protected static final String TAG = "location-updates-sample";
+    protected static final String TAG = "Directions";
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -289,37 +289,31 @@ public class Directions extends ActionBarActivity implements
             }
             //TODO
             // check current journey progress
-            if(mSteps!=null){
+            if(mSteps!=null && stepNum <= mSteps.length()){
                 JSONObject currentStep = null;
                 try {
-                    if(stepNum <= mSteps.length()){
                         Log.e(TAG, "getting info for step # " + stepNum);
                         currentStep = mSteps.getJSONObject(stepNum);
                         // calculate start and end point difference
                         String instructions = currentStep.get("html_instructions").toString();
                         String start = currentStep.get("start_location").toString();
-                        instructions = instructions.replaceAll("<b>","");
-                        instructions = instructions.replaceAll("</b>","");
+                        instructions = instructions.replaceAll("\\<.*?>","");
+                        //instructions = instructions.replaceAll("</b>","");
                         mDirectionsInfo.setText(instructions + "\n" + start);
-                    }
-                    else if(stepNum == mSteps.length()+1){
-                        Toast.makeText(this, "REACHED DESTINATION!",
-                                Toast.LENGTH_SHORT).show();
-                        stopLocationUpdates();
-
-                    }
-                    else{
-                        Toast.makeText(this, "ERROR: current step number is out of bounds",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
+                        stepNum = stepNum + 1;
+                        if(instructions.toLowerCase().contains("destination")){
+                            Toast.makeText(this, "REACHED DESTINATION!",
+                                    Toast.LENGTH_SHORT).show();
+                            stopLocationUpdates();
+                        }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             }
+
         }
-        stepNum = stepNum + 1;
+
     }
 
     /**
