@@ -113,7 +113,29 @@ public class Directions extends ActionBarActivity implements
         // get bundle extras
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            destinationID = extras.getInt("PLACE_ID");
+            DatabaseHandler myDBH = new DatabaseHandler(this);
+            try {
+                myDBH.createDatabase();
+            } catch (IOException ioe) {
+                Log.e(TAG, "unable to create database");
+                throw new Error("Unable to create database");
+            }
+            try {
+                myDBH.openDatabase();
+            }catch(SQLException sqle){
+                throw sqle;}
+
+            int favID = extras.getInt("PLACE_ID");
+            Log.e(TAG, "FavID = " + favID);
+            Cursor fav = myDBH.favLookup(favID);
+            if(fav!=null){
+                fav.moveToFirst();
+                destinationID = fav.getInt(fav.getColumnIndex("refid"));
+            }
+
+            myDBH.close();
+
+            //destinationID = extras.getInt("PLACE_ID");
             Log.e(TAG, "Place ID = " + destinationID);
         }
         else{
@@ -176,9 +198,7 @@ public class Directions extends ActionBarActivity implements
         }
     }
 
-    public void nextStepButtonHandler(View view){
-        stepNum = stepNum++;
-    }
+
 
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the
@@ -272,6 +292,11 @@ public class Directions extends ActionBarActivity implements
         }
     }
 
+    public void recalculateHandler(View view){
+        Toast.makeText(this, "Recalculating directions!", Toast.LENGTH_SHORT).show();
+        getDirections();
+    }
+
     /**
      * Updates the latitude, the longitude, and the last location time in the UI.
      */
@@ -280,7 +305,9 @@ public class Directions extends ActionBarActivity implements
             mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
             mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
             mLastUpdateTimeTextView.setText(mLastUpdateTime);
-            //getAddress();
+            getAddress();
+            // current lng lat
+            // destination lng lat
 
             //TODO
             // check directions
@@ -289,22 +316,41 @@ public class Directions extends ActionBarActivity implements
             }
             //TODO
             // check current journey progress
-            if(mSteps!=null && stepNum <= mSteps.length()){
+            if(mSteps!=null && stepNum <= (mSteps.length()-1)){
                 JSONObject currentStep = null;
                 try {
                         Log.e(TAG, "getting info for step # " + stepNum);
+                        Log.e(TAG, "# of steps = " + mSteps.length());
                         currentStep = mSteps.getJSONObject(stepNum);
                         // calculate start and end point difference
                         String instructions = currentStep.get("html_instructions").toString();
+                        instructions = instructions.replaceAll("\\<.*?>"," ");
                         String start = currentStep.get("start_location").toString();
-                        instructions = instructions.replaceAll("\\<.*?>","");
-                        //instructions = instructions.replaceAll("</b>","");
-                        mDirectionsInfo.setText(instructions + "\n" + start);
-                        stepNum = stepNum + 1;
-                        if(instructions.toLowerCase().contains("destination")){
+                        JSONObject startLoc = currentStep.getJSONObject("start_location");
+                        Double startLat = (Double) startLoc.get("lat");
+                        Double startLng = (Double )startLoc.get("lng");
+                        mDirectionsInfo.setText(instructions + "\n" + "Lat : " + startLat + " Lng : " + startLng);
+                        if(stepNum == (mSteps.length()-1)){
                             Toast.makeText(this, "REACHED DESTINATION!",
                                     Toast.LENGTH_SHORT).show();
-                            stopLocationUpdates();
+                            if (mRequestingLocationUpdates) {
+                                mRequestingLocationUpdates = false;
+                                setButtonsEnabledState();
+                                stopLocationUpdates();
+                            }
+                        }
+                        Double currLat = mCurrentLocation.getLatitude();
+                        Double currLng = mCurrentLocation.getLongitude();
+                        // Check if reached start location of next step
+                        double currDist = checkDistance(currLat, currLng, startLat, startLng);
+                        // if <= 5 m next step, else keep going forward
+                        TextView distTV = (TextView) findViewById(R.id.distance);
+                        distTV.setText("Distance to next step : " + currDist );
+                        if(currDist <= 8){
+                            stepNum = stepNum + 1;
+                        }
+                        else{
+                            // continue forward msg ??
                         }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -314,6 +360,20 @@ public class Directions extends ActionBarActivity implements
 
         }
 
+    }
+
+    public double checkDistance(double currLat, double currLng, double destLat, double destLng){
+        double dist;
+        // calculate distance between coordinates using spherical geometry
+        double radius = 6378.137; // Radius of earth in KM
+        double dLat = (destLat - currLat) * Math.PI / 180;
+        double dLon = (destLng - currLng) * Math.PI / 180;
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(currLat * Math.PI / 180) * Math.cos(destLat * Math.PI / 180) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        dist = radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * 1000;
+
+        return dist;
     }
 
     /**
@@ -457,7 +517,6 @@ public class Directions extends ActionBarActivity implements
     public void getAddress(){
         double mLat = mCurrentLocation.getLatitude();
         double mLon = mCurrentLocation.getLongitude();
-        //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+mLat+","+mLon+"&destination=43.009762,-81.274271&mode=walking&key=AIzaSyDe83w8OsRRYlZ5JwmGzDFGfWSQIdD00GQ";
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+mLat+","+mLon+"&key=AIzaSyB--SRzc9zZHAq7Y0Ln7iNC5JK3Tp1S4I0";
         new RequestCurrentAddress().execute(url);
     }
@@ -539,6 +598,8 @@ public class Directions extends ActionBarActivity implements
         Cursor placeInfo = myDBH.fetchInfoFromID(destinationID);
         myDBH.close();
 
+
+
         if(placeInfo!=null){
             placeInfo.moveToFirst();
             Double destLat = placeInfo.getDouble(placeInfo.getColumnIndex("latitude"));
@@ -604,7 +665,11 @@ public class Directions extends ActionBarActivity implements
                 mSteps = steps;
                 stepNum = 0;
                 JSONObject currentStep = mSteps.getJSONObject(stepNum);
-                mDirectionsInfo.setText(currentStep.toString());
+                String instructions = currentStep.get("html_instructions").toString();
+                String start = currentStep.get("start_location").toString();
+                instructions = instructions.replaceAll("\\<.*?>","");
+                mDirectionsInfo.setText(instructions + "\n" + start);
+                //mDirectionsInfo.setText(currentStep.toString());
 
             } catch (Exception e) {
                 Log.v(TAG, "JSON Failed");

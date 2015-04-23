@@ -47,6 +47,7 @@
     <string name="title_activity_device_list">DeviceListActivity</string>
 
     <color name="green">#1abc9c</color>
+    <color name="background">#86E2D5</color>
 
     <string name="title_activity_send_directions">SendDirections</string>
     <string name="title_activity_try_bluetooth">TryBluetooth</string>
@@ -73,6 +74,8 @@
     <string name="edit_button">Update Place</string>
     <string name="title_activity_add_my_place">AddMyPlace</string>
     <string name="location_updated_message">Location Updated!!</string>
+
+    <string name="my_places">My Places</string>
 
 
 

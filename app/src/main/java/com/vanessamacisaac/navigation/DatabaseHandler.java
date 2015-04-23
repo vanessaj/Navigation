@@ -26,6 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_ADDR = "address";
     public static final String KEY_LON = "longitude";
     public static final String KEY_LAT = "latitude";
+    public static final String KEY_REF = "refid";
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/com.vanessamacisaac.navigation/databases/";
 
@@ -188,14 +189,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
         placesC = myData.query(DB_TABLE_PLACES, new String[] {KEY_ROWID, KEY_PICID, KEY_NAME, KEY_ADDR, KEY_LON, KEY_LAT}, null, null, null, null, null, null);
 
-        if(placesC != null){
-            placesC.moveToFirst();
-        }
-
         return placesC;
     }
 
-    // paramete is a picture ID
+    // parameter is a picture ID
     // pic ID comes from homescreen click
     // looks up the picID and finds the refID (the id in places table)
     // the refID is then looked up in the places table and result is returned as a cursor
@@ -270,5 +267,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myData.compileStatement("CREATE TABLE IF NOT EXISTS places (_id INTEGER, pic_id INTEGER, name TEXT, address TEXT, longitude REAL, latitude REAL)");
 
         myData.execSQL("UPDATE places SET name = ?, address = ?, latitude = ?, longitude = ? WHERE _id = ?", new String[]{name, address, lat, lon, placeID});
+    }
+
+    public Cursor getFavPlaces(){
+        Cursor c = null;
+        String myPath = DB_PATH + DB_NAME;
+        myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS favourites (_id INTEGER, refid INTEGER)");
+
+        c = myData.rawQuery("SELECT * FROM favourites", null);
+        return c;
+    }
+
+    public Cursor favLookup(int favPosition){
+        String pos = Integer.toString(favPosition);
+        Cursor c = null;
+        String myPath = DB_PATH + DB_NAME;
+        myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS favourites (_id INTEGER, refid INTEGER)");
+
+        c = myData.rawQuery("SELECT refid FROM favourites WHERE _id = ?", new String[]{pos});
+        return c;
     }
 }

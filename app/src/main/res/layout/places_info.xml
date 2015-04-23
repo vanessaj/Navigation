@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="10dp"
         android:contentDescription="TODO"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/marker" />
 
     <TextView
         android:id="@+id/secondLine"
