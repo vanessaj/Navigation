@@ -113,27 +113,8 @@ public class Directions extends ActionBarActivity implements
         // get bundle extras
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            DatabaseHandler myDBH = new DatabaseHandler(this);
-            try {
-                myDBH.createDatabase();
-            } catch (IOException ioe) {
-                Log.e(TAG, "unable to create database");
-                throw new Error("Unable to create database");
-            }
-            try {
-                myDBH.openDatabase();
-            }catch(SQLException sqle){
-                throw sqle;}
 
-            int favID = extras.getInt("PLACE_ID");
-            Log.e(TAG, "FavID = " + favID);
-            Cursor fav = myDBH.favLookup(favID);
-            if(fav!=null){
-                fav.moveToFirst();
-                destinationID = fav.getInt(fav.getColumnIndex("refid"));
-            }
-
-            myDBH.close();
+            destinationID = extras.getInt("PLACE_ID");
 
             //destinationID = extras.getInt("PLACE_ID");
             Log.e(TAG, "Place ID = " + destinationID);
@@ -667,8 +648,11 @@ public class Directions extends ActionBarActivity implements
                 JSONObject currentStep = mSteps.getJSONObject(stepNum);
                 String instructions = currentStep.get("html_instructions").toString();
                 String start = currentStep.get("start_location").toString();
+                JSONObject startLoc = currentStep.getJSONObject("start_location");
+                Double startLat = (Double) startLoc.get("lat");
+                Double startLng = (Double )startLoc.get("lng");
                 instructions = instructions.replaceAll("\\<.*?>","");
-                mDirectionsInfo.setText(instructions + "\n" + start);
+                mDirectionsInfo.setText(instructions + "\n" + "Lat: " + startLat + " Lng: " + startLng);
                 //mDirectionsInfo.setText(currentStep.toString());
 
             } catch (Exception e) {

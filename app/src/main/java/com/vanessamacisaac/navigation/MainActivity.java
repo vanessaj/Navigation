@@ -143,30 +143,104 @@ public class MainActivity extends ActionBarActivity {
 
     public void clickTL(View view){
         // top left button clicked
-        //Intent i = new Intent(this, Directions.class);
-        //startActivity(i);
-        startDirections(1);
+        int favID = 1;
+        int destinationID;
+
+        DatabaseHandler myDBH = new DatabaseHandler(this);
+        try {
+            myDBH.createDatabase();
+        } catch (IOException ioe) {
+            Log.e(TAG, "unable to create database");
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDBH.openDatabase();
+        }catch(SQLException sqle){
+            throw sqle;}
+
+        Cursor fav = myDBH.favLookup(favID);
+        if(fav!=null){
+            fav.moveToFirst();
+            destinationID = fav.getInt(fav.getColumnIndex("refid"));
+            startDirections(destinationID);
+        }
+
+
     }
 
     public void clickTR(View view){
         // top right button clicked
-        //Intent i = new Intent(this, DeviceListActivity.class);
-        //startActivity(i);
-        startDirections(2);
+        int favID = 2;
+        int destinationID;
+
+        DatabaseHandler myDBH = new DatabaseHandler(this);
+        try {
+            myDBH.createDatabase();
+        } catch (IOException ioe) {
+            Log.e(TAG, "unable to create database");
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDBH.openDatabase();
+        }catch(SQLException sqle){
+            throw sqle;}
+
+        Cursor fav = myDBH.favLookup(favID);
+        if(fav!=null){
+            fav.moveToFirst();
+            destinationID = fav.getInt(fav.getColumnIndex("refid"));
+            startDirections(destinationID);
+        }
     }
 
     public void clickBL(View view){
         // bottom left button clicked
-        //Intent i = new Intent(this, SendDirections.class);
-        //startActivity(i);
-        startDirections(3);
+        int favID = 3;
+        int destinationID;
+
+        DatabaseHandler myDBH = new DatabaseHandler(this);
+        try {
+            myDBH.createDatabase();
+        } catch (IOException ioe) {
+            Log.e(TAG, "unable to create database");
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDBH.openDatabase();
+        }catch(SQLException sqle){
+            throw sqle;}
+
+        Cursor fav = myDBH.favLookup(favID);
+        if(fav!=null){
+            fav.moveToFirst();
+            destinationID = fav.getInt(fav.getColumnIndex("refid"));
+            startDirections(destinationID);
+        }
     }
 
     public void clickBR(View view){
         // bottom right button clicked
-        //Intent i = new Intent(this, TryBluetooth.class);
-        //startActivity(i);
-        startDirections(4);
+        int favID = 4;
+        int destinationID;
+
+        DatabaseHandler myDBH = new DatabaseHandler(this);
+        try {
+            myDBH.createDatabase();
+        } catch (IOException ioe) {
+            Log.e(TAG, "unable to create database");
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDBH.openDatabase();
+        }catch(SQLException sqle){
+            throw sqle;}
+
+        Cursor fav = myDBH.favLookup(favID);
+        if(fav!=null){
+            fav.moveToFirst();
+            destinationID = fav.getInt(fav.getColumnIndex("refid"));
+            startDirections(destinationID);
+        }
     }
 
     public void startDirections(int placeID){

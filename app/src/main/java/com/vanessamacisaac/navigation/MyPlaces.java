@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -122,6 +123,22 @@ public class MyPlaces extends ActionBarActivity {
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(dataAdapter);
 
+        final int[] imgIds = new int[]{ R.drawable.marker, R.drawable.home, R.drawable.nature,
+                R.drawable.work, R.drawable.entertainment, R.drawable.bank,
+                R.drawable.restaurant, R.drawable.grocery, R.drawable.shopping,
+                R.drawable.dentist, R.drawable.health, R.drawable.friend
+        };
+
+        View v = listView.getChildAt(0 - listView.getFirstVisiblePosition());
+        int vcount = listView.getChildCount();
+        int dataCount = dataAdapter.getCount();
+        
+        Log.e("TAG", "# of children = " + dataCount);
+        //ImageView img = (ImageView) v.findViewById(R.id.icon);
+        //img.setImageResource(R.drawable.home);
+        //img.setImageDrawable(R.drawable.home);
+
+
 
         // get ID of item clicked in listView
         AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener(){
@@ -133,13 +150,15 @@ public class MyPlaces extends ActionBarActivity {
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
+                //toast.show();
                 Log.v("Click", "item at pos: " + position);
 
                 // TODO
                 // CALL DIRECTIONS CLASS
                 // PASS ID TO CLASS
                 // START DIRECTIONS
+                sendDirections(id);
+
             }
         };
 
@@ -147,6 +166,13 @@ public class MyPlaces extends ActionBarActivity {
 
         registerForContextMenu(listView);
 
+    }
+
+    private void sendDirections(long id) {
+        int myID = (int) id;
+        Intent i = new Intent(this, Directions.class);
+        i.putExtra("PLACE_ID", myID);
+        startActivity(i);
     }
 
     @Override

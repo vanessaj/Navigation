@@ -8,7 +8,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 
@@ -18,6 +20,12 @@ public class AddMyPlace extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_my_place);
+
+        Spinner categories = (Spinner) findViewById(R.id.pic_picker);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.pic_categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categories.setAdapter(adapter);
     }
 
 
@@ -67,11 +75,13 @@ public class AddMyPlace extends ActionBarActivity {
         EditText address = (EditText)findViewById(R.id.add_address);
         EditText lat = (EditText)findViewById(R.id.add_lat);
         EditText lon = (EditText)findViewById(R.id.add_lon);
+        Spinner cat = (Spinner)findViewById(R.id.pic_picker);
 
         String nameText = name.getText().toString();
         String addressText = address.getText().toString();
         String latText = lat.getText().toString();
         String lonText = lon.getText().toString();
+        int pic = cat.getSelectedItemPosition();
 
         String LAT_REGEX = "(\\-)?\\d{1,2}(.\\d*)?";
         String LON_REGEX = "(\\-)?\\d{1,3}(.\\d*)?";
@@ -124,13 +134,16 @@ public class AddMyPlace extends ActionBarActivity {
         EditText address = (EditText)findViewById(R.id.add_address);
         EditText lat = (EditText)findViewById(R.id.add_lat);
         EditText lon = (EditText)findViewById(R.id.add_lon);
+        Spinner cat = (Spinner)findViewById(R.id.pic_picker);
 
         String nameText = name.getText().toString();
         String addressText = address.getText().toString();
         String latText = lat.getText().toString();
         String lonText = lon.getText().toString();
+        int pic = cat.getSelectedItemPosition();
+        String picID = Integer.toString(pic);
 
-        myDBH.addPlace(nameText, addressText, latText, lonText);
+        myDBH.addPlace(picID, nameText, addressText, latText, lonText);
         myDBH.close();
 
         name.setText("");

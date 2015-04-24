@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_name"
+        android:textSize="18sp"
         android:padding="5dp" />
 
     <EditText
@@ -18,13 +19,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/sample_name"
+        android:textSize="18sp"
         android:padding="5dp"
         />
+
+    <TextView
+        android:id="@+id/add_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/place_category"/>
+
+    <Spinner
+        android:id="@+id/pic_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </Spinner>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_address"
+        android:textSize="18sp"
         android:padding="5dp" />
 
     <EditText
@@ -32,13 +49,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/sample_address"
+        android:textSize="18sp"
         android:padding="5dp"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_suggestion"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_lat"
+        android:textSize="18sp"
         android:padding="5dp" />
 
     <EditText
@@ -46,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/sample_lat"
+        android:textSize="18sp"
         android:padding="5dp"
         />
 
@@ -53,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_lon"
+        android:textSize="18sp"
         android:padding="5dp" />
 
     <EditText
@@ -60,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/sample_lon"
+        android:textSize="18sp"
         android:padding="5dp"
         android:paddingBottom="10dp"
         />
@@ -69,6 +96,7 @@
         android:layout_height="wrap_content"
         android:text="@string/add_button"
         android:layout_gravity="center_horizontal"
+        android:textSize="18sp"
         android:padding="5dp"
         android:onClick="formValidate"
         />

@@ -11,7 +11,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -41,6 +43,12 @@ public class EditPlace extends ActionBarActivity {
         //int chosenItem = 2;
         chosenPlace = chosenItem;
 
+        Spinner categories = (Spinner) findViewById(R.id.pic_picker);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.pic_categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categories.setAdapter(adapter);
+
         showCurrInfo(chosenItem);
     }
 
@@ -51,6 +59,7 @@ public class EditPlace extends ActionBarActivity {
         EditText addBox = (EditText)findViewById(R.id.edit_address);
         EditText latBox = (EditText)findViewById(R.id.edit_lat);
         EditText lonBox = (EditText)findViewById(R.id.edit_lon);
+        Spinner categories = (Spinner) findViewById(R.id.pic_picker);
 
         // make a copy of the database handler
         DatabaseHandler myDBH = new DatabaseHandler(this);
@@ -73,6 +82,7 @@ public class EditPlace extends ActionBarActivity {
         String lonText = "";
         Double dLat = 0.0;
         Double dLon = 0.0;
+        int picid = 0;
 
         // get info for chosenItem, passed from MyPlaces Activity
         Cursor mCursor = myDBH.fetchInfoFromID(chosenItem);
@@ -82,6 +92,7 @@ public class EditPlace extends ActionBarActivity {
             int addCol = mCursor.getColumnIndex("address");
             int latCol = mCursor.getColumnIndex("latitude");
             int lonCol = mCursor.getColumnIndex("longitude");
+            picid = mCursor.getInt(mCursor.getColumnIndex("pic_id"));
             nameText = mCursor.getString(nameCol);
             addrText = mCursor.getString(addCol);
             dLat = mCursor.getDouble(latCol);
@@ -96,6 +107,8 @@ public class EditPlace extends ActionBarActivity {
         latBox.setText(latText);
         lonBox.setText(lonText);
 
+        categories.setSelection(picid);
+
     }
 
     public void formValidate(View view) {
@@ -103,11 +116,14 @@ public class EditPlace extends ActionBarActivity {
         EditText address = (EditText)findViewById(R.id.edit_address);
         EditText lat = (EditText)findViewById(R.id.edit_lat);
         EditText lon = (EditText)findViewById(R.id.edit_lon);
+        Spinner cat = (Spinner)findViewById(R.id.pic_picker);
 
         String nameText = name.getText().toString();
         String addressText = address.getText().toString();
         String latText = lat.getText().toString();
         String lonText = lon.getText().toString();
+        int picid = cat.getSelectedItemPosition();
+        String pic = Integer.toString(picid);
 
         String LAT_REGEX = "(\\-)?\\d{1,2}(.\\d*)?";
         String LON_REGEX = "(\\-)?\\d{1,3}(.\\d*)?";
@@ -145,7 +161,7 @@ public class EditPlace extends ActionBarActivity {
                 }
 
                 else{
-                    updatePlaceDB(nameText, addressText, latText, lonText);
+                    updatePlaceDB(pic, nameText, addressText, latText, lonText);
                 }
 
             }
@@ -153,12 +169,12 @@ public class EditPlace extends ActionBarActivity {
 
     }
 
-    public void updatePlaceDB(String name, String address, String lat, String lon){
+    public void updatePlaceDB(String pic, String name, String address, String lat, String lon){
         DatabaseHandler myDBH = new DatabaseHandler(this);
 
         String place = Integer.toString(chosenPlace);
 
-        myDBH.updatePlace(name, address, lat, lon, place);
+        myDBH.updatePlace(pic, name, address, lat, lon, place);
 
         // vars for retrieved db data
         String rName = "";
@@ -212,6 +228,7 @@ public class EditPlace extends ActionBarActivity {
             Log.v("Updates DB", "Addr " + rAddr);
             Log.v("Updates DB", "Lat " + rLat);
             Log.v("Updates DB", "Lon " + rLon);
+            Log.v("Updates DB", "PicID " + pic);
 
             Context context = getApplicationContext();
             CharSequence text = "Uh oh, something went wrong.\n" + rName + "did not update" ;

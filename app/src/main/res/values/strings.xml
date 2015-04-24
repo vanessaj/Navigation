@@ -76,7 +76,31 @@
     <string name="location_updated_message">Location Updated!!</string>
 
     <string name="my_places">My Places</string>
-
+    <string name="add_name">Enter the location name: </string>
+    <string name="add_sample_name">ex: Home</string>
+    <string name="add_address">Enter location address: </string>
+    <string name="add_sample_address">ex: 123 Main St.</string>
+    <string name="add_category">Pick a location category : </string>
+    <string-array name="pic_categories">
+        <item>None</item>
+        <item>Home</item>
+        <item>Nature</item>
+        <item>Work</item>
+        <item>Entertainment</item>
+        <item>Bank</item>
+        <item>Restaurant</item>
+        <item>Grocery</item>
+        <item>Mall</item>
+        <item>Dentist</item>
+        <item>Doctor</item>
+        <item>Friend</item>
+    </string-array>
+    <string name="add_suggestion">Suggest Coordinates</string>
+    <string name="add_lat">Enter location\'s latitude</string>
+    <string name="add_sample_lat">Ex: -45.354684</string>
+    <string name="add_lng">Enter location\'s longitude</string>
+    <string name="add_sample_lng">Ex: 75.864915</string>
+    <string name="place_category">Pick a location category :</string>
 
 
 </resources>
