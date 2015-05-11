@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_launcher"
+        android:title="Home"/>
+
+    <item
         android:id="@+id/menu_add_place"
         android:icon="@drawable/ic_launcher"
         android:title="Add Place"/>
 
     <item
-        android:id="@+id/menu_home"
+        android:id="@+id/menu_fave"
         android:icon="@drawable/ic_launcher"
-        android:title="Home"/>
+        android:title="Favourite Places"/>
+
     <item
         android:id="@+id/menu_device_list"
         android:icon="@drawable/ic_launcher"

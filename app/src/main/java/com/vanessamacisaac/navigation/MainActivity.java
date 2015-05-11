@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
             String name = c1.getString(c1.getColumnIndex("name"));
             Button b = (Button) findViewById(R.id.fav1_button);
             b.setCompoundDrawablesWithIntrinsicBounds(0, imgIds[pic_id], 0, 0);
-            b.setPadding(0, 64, 0, 0);
+            b.setPadding(0, 120, 0, 0);
             b.setText(name);
             //ib.setImageResource(imgIds[pic_id]);
         }
@@ -74,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
             String name = c2.getString(c2.getColumnIndex("name"));
             Button b = (Button) findViewById(R.id.fav2_button);
             b.setCompoundDrawablesWithIntrinsicBounds(0, imgIds[pic_id], 0, 0);
-            b.setPadding(0, 64, 0, 0);
+            b.setPadding(0, 120, 0, 0);
             b.setText(name);
             //ib.setImageResource(imgIds[pic_id]);
         }
@@ -84,17 +84,18 @@ public class MainActivity extends ActionBarActivity {
             String name = c3.getString(c3.getColumnIndex("name"));
             Button b = (Button) findViewById(R.id.fav3_button);
             b.setCompoundDrawablesWithIntrinsicBounds(0, imgIds[pic_id], 0, 0);
-            b.setPadding(0, 64, 0, 0);
+            b.setPadding(0, 120, 0, 0);
             b.setText(name);
             //ib.setImageResource(imgIds[pic_id]);
         }
         if(c4!=null){
             c4.moveToFirst();
             int pic_id = c4.getInt(c4.getColumnIndex("pic_id"));
+            //int pic_id = 1;
             String name = c4.getString(c4.getColumnIndex("name"));
             Button b = (Button) findViewById(R.id.fav4_button);
             b.setCompoundDrawablesWithIntrinsicBounds(0, imgIds[pic_id], 0, 0);
-            b.setPadding(0, 64, 0, 0);
+            b.setPadding(0, 120, 0, 0);
             b.setText(name);
             //ib.setImageResource(imgIds[pic_id]);
         }
@@ -125,6 +126,10 @@ public class MainActivity extends ActionBarActivity {
             case R.id.menu_home:
                 Intent newHome = new Intent (this, MainActivity.class);
                 startActivity(newHome);
+                break;
+            case R.id.menu_fave:
+                Intent newFave = new Intent(this, FavouritePlaces.class);
+                startActivity(newFave);
                 break;
             case R.id.menu_device_list:
                 Intent deviceList = new Intent(this, DeviceListActivity.class);

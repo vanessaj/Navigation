@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.vanessamacisaac.navigation.NavExample">
+
+    <TextView android:text="Destination : Grocery Store" android:layout_width="wrap_content"
+        android:textSize="24sp"
+        android:paddingBottom="15dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="24sp"
+        android:text="Current Location :"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="22sp"
+        android:text="800 King Edward Ave, Ottawa, ON K1N, Canada"
+        android:layout_width="wrap_content"
+        android:paddingBottom="15dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="24sp"
+        android:text="Instructions :"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="22sp"
+        android:text="Head north on King Edward Ave/Ottawa Regional Rd 99 S toward Templeton St"
+        android:layout_width="wrap_content"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="22sp"
+        android:text="Distance to next step: 550 m"
+        android:layout_width="wrap_content"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="RECALCULATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+
+</LinearLayout>

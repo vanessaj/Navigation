@@ -101,6 +101,11 @@
     <string name="add_lng">Enter location\'s longitude</string>
     <string name="add_sample_lng">Ex: 75.864915</string>
     <string name="place_category">Pick a location category :</string>
+    <string name="title_activity_favourite_places">FavouritePlaces</string>
+    <string name="title_activity_nav_example">NavExample</string>
+    <string name="destination">Destination : </string>
+    <string name="currentlocation">Current Location : </string>
+    <string name="distanceTitle">Distance to next step : </string>
 
 
 </resources>

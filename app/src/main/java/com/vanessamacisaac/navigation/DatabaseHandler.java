@@ -279,6 +279,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c;
     }
 
+    public void updateFav(int refid, int favid){
+        String myPath = DB_PATH + DB_NAME;
+        myData = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+        myData.compileStatement("CREATE TABLE IF NOT EXISTS favourites (_id INTEGER, refid INTEGER)");
+
+        myData.execSQL("UPDATE favourites SET refid = ? WHERE _id = ?", new Object[]{refid, favid});
+    }
+
+
+
     public Cursor favLookup(int favPosition){
         String pos = Integer.toString(favPosition);
         Cursor c = null;

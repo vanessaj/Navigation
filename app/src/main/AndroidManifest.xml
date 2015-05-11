@@ -54,6 +54,14 @@
             android:name=".Directions"
             android:label="@string/title_activity_directions" >
         </activity>
+        <activity
+            android:name=".FavouritePlaces"
+            android:label="@string/title_activity_favourite_places" >
+        </activity>
+        <activity
+            android:name=".NavExample"
+            android:label="@string/title_activity_nav_example" >
+        </activity>
     </application>
 
 </manifest>

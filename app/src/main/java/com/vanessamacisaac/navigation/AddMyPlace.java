@@ -127,6 +127,10 @@ public class AddMyPlace extends ActionBarActivity {
 
     }
 
+    public void suggestCoors(View view){
+
+    }
+
     public void addPlaceDB(){
         DatabaseHandler myDBH = new DatabaseHandler(this);
 

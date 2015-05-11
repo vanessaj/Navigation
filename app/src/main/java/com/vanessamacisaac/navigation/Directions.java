@@ -127,8 +127,8 @@ public class Directions extends ActionBarActivity implements
         // Locate the UI widgets.
         mStartUpdatesButton = (Button) findViewById(R.id.start_updates_button);
         mStopUpdatesButton = (Button) findViewById(R.id.stop_updates_button);
-        mLatitudeTextView = (TextView) findViewById(R.id.latitude_text);
-        mLongitudeTextView = (TextView) findViewById(R.id.longitude_text);
+        //mLatitudeTextView = (TextView) findViewById(R.id.latitude_text);
+        //mLongitudeTextView = (TextView) findViewById(R.id.longitude_text);
         mLastUpdateTimeTextView = (TextView) findViewById(R.id.last_update_time_text);
         mDirectionsInfo = (TextView) findViewById(R.id.directionsRequest);
 
@@ -141,6 +141,7 @@ public class Directions extends ActionBarActivity implements
         // Kick off the process of building a GoogleApiClient and requesting the LocationServices
         // API.
         buildGoogleApiClient();
+        //startLocationUpdates();
     }
 
     /**
@@ -283,8 +284,8 @@ public class Directions extends ActionBarActivity implements
      */
     private void updateUI() {
         if (mCurrentLocation != null) {
-            mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
-            mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
+           // mLatitudeTextView.setText(String.valueOf(mCurrentLocation.getLatitude()));
+           // mLongitudeTextView.setText(String.valueOf(mCurrentLocation.getLongitude()));
             mLastUpdateTimeTextView.setText(mLastUpdateTime);
             getAddress();
             // current lng lat
@@ -310,14 +311,15 @@ public class Directions extends ActionBarActivity implements
                         JSONObject startLoc = currentStep.getJSONObject("start_location");
                         Double startLat = (Double) startLoc.get("lat");
                         Double startLng = (Double )startLoc.get("lng");
-                        mDirectionsInfo.setText(instructions + "\n" + "Lat : " + startLat + " Lng : " + startLng);
+                        //mDirectionsInfo.setText(instructions + "\n" + "Lat : " + startLat + " Lng : " + startLng);
+                        mDirectionsInfo.setText("" + instructions);
                         if(stepNum == (mSteps.length()-1)){
-                            Toast.makeText(this, "REACHED DESTINATION!",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "REACHED DESTINATION!", Toast.LENGTH_SHORT).show();
+                            stopLocationUpdates();
                             if (mRequestingLocationUpdates) {
                                 mRequestingLocationUpdates = false;
                                 setButtonsEnabledState();
-                                stopLocationUpdates();
+                                //stopLocationUpdates();
                             }
                         }
                         Double currLat = mCurrentLocation.getLatitude();
@@ -326,12 +328,13 @@ public class Directions extends ActionBarActivity implements
                         double currDist = checkDistance(currLat, currLng, startLat, startLng);
                         // if <= 5 m next step, else keep going forward
                         TextView distTV = (TextView) findViewById(R.id.distance);
-                        distTV.setText("Distance to next step : " + currDist );
+                        int currDistOutput = (int) currDist;
+                        distTV.setText("" + currDistOutput);
                         if(currDist <= 8){
                             stepNum = stepNum + 1;
                         }
                         else{
-                            // continue forward msg ??
+                            // continue fwd
                         }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -652,7 +655,8 @@ public class Directions extends ActionBarActivity implements
                 Double startLat = (Double) startLoc.get("lat");
                 Double startLng = (Double )startLoc.get("lng");
                 instructions = instructions.replaceAll("\\<.*?>","");
-                mDirectionsInfo.setText(instructions + "\n" + "Lat: " + startLat + " Lng: " + startLng);
+                mDirectionsInfo.setText("" + instructions);
+                //mDirectionsInfo.setText(instructions + "\n" + "Lat: " + startLat + " Lng: " + startLng);
                 //mDirectionsInfo.setText(currentStep.toString());
 
             } catch (Exception e) {

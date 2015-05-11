@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:onClick="stopUpdatesButtonHandler"/>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/latitude_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -29,38 +29,74 @@
     <TextView
         android:id="@+id/longitude_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:orientation="horizontal">
+
+        <TextView android:text="@string/destination"
+            android:id="@+id/destinationTitle"
+            android:layout_width="wrap_content"
+            android:textSize="24sp"
+            android:layout_height="wrap_content"
+            android:paddingRight="8dp"/>
+        <TextView
+            android:id="@+id/destinationName"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/last_update_time_text"
+        android:textSize="24sp"
+        android:text="@string/currentlocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/currentAddress"
+        android:textSize="18sp"
+        android:paddingBottom="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/destinationTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Destination:"/>
 
     <TextView
-        android:id="@+id/destinationName"
+        android:textSize="24sp"
+        android:text="Instructions :"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/directionsRequest"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:orientation="horizontal">
+
+        <TextView android:text="@string/distanceTitle"
+            android:id="@+id/distanceTitle"
+            android:layout_width="wrap_content"
+            android:textSize="24sp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
 
     <Button
         android:id="@+id/recalculateButton"
@@ -69,6 +105,11 @@
         android:text="RECALCULATE"
         android:onClick="recalculateHandler"
         />
+
+    <TextView
+        android:id="@+id/last_update_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

@@ -24,6 +24,7 @@
         />
 
     <TextView
+        android:paddingTop="10dp"
         android:id="@+id/add_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
     </Spinner>
 
     <TextView
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_address"
@@ -54,11 +56,14 @@
         />
 
     <Button
+        android:paddingTop="5dp"
+        android:onClick="suggestCoors"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_suggestion"/>
 
     <TextView
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_lat"
@@ -75,6 +80,7 @@
         />
 
     <TextView
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/give_lon"
@@ -92,7 +98,8 @@
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_button"
         android:layout_gravity="center_horizontal"
